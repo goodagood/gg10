@@ -15,7 +15,7 @@ var cel  = require('connect-ensure-login');
 //var connect = require('connect');
 
 // the old config-mj.js:
-var myconfig =  require("../config/config.js");
+var myconfig =  require("./config/config.js");
 
 var port = 9090, port_ssl = 9099;
 
@@ -109,9 +109,13 @@ var app = express();
 var session    = require('express-session') , 
     RedisStore = require('connect-redis')(session);
 
+var secrets = require("./config/secret-dir.js");
+var redis_host = secrets.conf.redis.redis_host;
+var redis_port = secrets.conf.redis.redis_port;
+
 var redis_store_instance = new RedisStore({
-  port: myconfig.redis_port,
-  host: myconfig.redis_host,
+  port: redis_port,
+  host: redis_host,
   prefix: 'e.sess.rs'
 });
 

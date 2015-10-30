@@ -1,7 +1,11 @@
 
 
-var redis_host = "54.248.54.80";
-var redis_port = null;  // null is default 6379
+//var redis_host = "54.248.54.80";
+//var redis_port = null;  // null is default 6379
+
+var secrets = require("../config/secret-dir.js");
+var redis_host = secrets.conf.redis.redis_host;
+var redis_port = secrets.conf.redis.redis_port;
 
 var redis = require("redis");
 var client = redis.createClient(redis_port, redis_host);

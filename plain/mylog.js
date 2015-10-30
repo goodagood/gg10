@@ -3,7 +3,7 @@
 var npmlog = require('npmlog');
 var fs = require('fs');
 
-var myconfig =   require("../config/config.js");
+var myconfig =   require("./config/config.js");
 var logfile = myconfig.logfile;
 
 //console.log(logfile);

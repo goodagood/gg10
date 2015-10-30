@@ -10,8 +10,11 @@ var util  = require('util');
 
 var mylog = require("./mylog.js")
 
-var redis_host = conf.redis_host, redis_port = conf.redis_port;
-if(!redis_port) redis_port = 6379;
+//var redis_host = conf.redis_host, redis_port = conf.redis_port;
+//if(!redis_port) redis_port = 6379;
+var secrets = require("../config/secret-dir.js");
+var redis_host = secrets.conf.redis.redis_host;
+var redis_port = secrets.conf.redis.redis_port;
 
 var redis = require("redis");
 var client = redis.createClient(redis_port, redis_host);

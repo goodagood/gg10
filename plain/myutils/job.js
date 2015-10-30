@@ -2,8 +2,11 @@
 
 var myconfig   =   require("../config/config.js");
 
-var redis_host = myconfig.redis_host;
-var redis_port = myconfig.redis_port;
+var secret     = require('../config/secret-dir.js');
+var redis_conf = secret.conf.redis;
+
+var redis_host = redis_conf.redis_host;
+var redis_port = redis_conf.redis_port;
 
 var redis  = require("redis");
 var client = redis.createClient(redis_port, redis_host);

@@ -17,7 +17,7 @@ var ft     = require('../../myutils/filetype.js');
 var bucket = require('../bucket.js');
 var myutil = require('../../myutils/myutil.js');
 
-var myconfig =   require("../config/config.js");
+var myconfig =   require("../../config/config.js");
 var image    = require("../image.js");
 var s3folder = require("../folder-v5.js");
 var s3file   = require("../simple-file-v3.js");

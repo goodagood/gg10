@@ -4,7 +4,7 @@
 // 2015 0121 deprecated, use users/a.js instead
 //
 
-var conf =   require("../config/config.js");
+var conf =   require("./config/config.js");
 
 var clog = console.log;
 var util = require('util');

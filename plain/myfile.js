@@ -2,7 +2,7 @@
 // Use redis for file rec, try to set up my file system.
 //
 
-var conf =  require("../config/config.js");
+var conf =  require("./config/config.js");
 
 var clog = console.log;
 var util = require('util');

@@ -7,7 +7,7 @@ var myuser = require('./users/a.js');
 
 var cel = require('connect-ensure-login');
 
-var myconfig =  require("../config/config.js");
+var myconfig =  require("./config/config.js");
 
 var lang     = require("./users/lang.js");
 

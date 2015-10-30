@@ -5,10 +5,8 @@
 var config = {};
 module.exports = config;
 
-//config.redis_host = "54.248.54.80";
-//config.redis_host = "127.0.0.1";
-config.redis_host = "54.178.88.149";
-config.redis_port = 6379;  // null is default 6379
+//config.redis_host = "54.178.88.149";
+//config.redis_port = 6379;  // null is default 6379
 // usage: client = redis.createClient(redis_port, redis_host);
 
 // a list to contain usernames, serves as current container:
@@ -57,9 +55,6 @@ config.default_folder_options = {
 //config.default_folders_opts = {isFolder:true, parentFolder:'depends'}
 config.default_files = ['/.getc/ggdefaults', ];
 
-config.aws_access_key_id = "AKIAJMFE4ZJAB7ILB45A";
-config.aws_secret_access_key = "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";
-config.region = "ap-northeast-1";
 
 
 config.underscore_template_path = "u_templates";

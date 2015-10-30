@@ -11,9 +11,6 @@ var async = require("async");
 var s3a = require("../s3/s3-a.js");
 
 
-var cred     =  require("gg-credentials");
-var myconfig =  cred.config;
-var root_bucket = myconfig.root_bucket;
 
 var secret = require('../config/secret-dir.js');
 //var myconfig = secret.get_my_config();  // this is also ok.

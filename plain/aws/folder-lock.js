@@ -13,8 +13,11 @@ var async   = require('async');
 var myconfig   =   require("../config/config.js");
 var folder_module = require('./folder-v5.js');
 
-var redis_host = myconfig.redis_host;
-var redis_port = myconfig.redis_port;
+//var redis_host = myconfig.redis_host;
+//var redis_port = myconfig.redis_port;
+var secrets = require("../config/secret-dir.js");
+var redis_host = secrets.conf.redis.redis_host;
+var redis_port = secrets.conf.redis.redis_port;
 
 
 var rclient = redis.createClient(redis_port, redis_host);

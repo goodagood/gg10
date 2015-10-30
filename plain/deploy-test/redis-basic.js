@@ -8,9 +8,12 @@ var conf  =   require("../config/config.js");
 var util  = require('util');
 
 
-var redis_host = conf.redis_host
-var redis_port = conf.redis_port;
-if(!redis_port) redis_port = 6379;
+//var redis_host = conf.redis_host
+//var redis_port = conf.redis_port;
+//if(!redis_port) redis_port = 6379;
+var secrets = require("../config/secret-dir.js");
+var redis_host = secrets.conf.redis.redis_host;
+var redis_port = secrets.conf.redis.redis_port;
 
 var redis = require("redis");
 

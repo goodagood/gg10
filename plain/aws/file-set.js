@@ -16,11 +16,7 @@ var u       = require('underscore');
 //var myconfig   =   require("../config/config.js");
 var folder_module = require('./folder-v5.js');
 
-//var redis_host = myconfig.redis_host;
-//var redis_port = myconfig.redis_port;
 
-
-//var rclient = redis.createClient(redis_port, redis_host);
 
 //var Lock_Prefix = 'folder.lock.';
 
