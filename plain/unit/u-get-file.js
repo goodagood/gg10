@@ -32,10 +32,13 @@ var stop = function(seconds){setTimeout(process.exit, (seconds||1)*1000);};
 
 
 var Test_file_1   = 'abc/test/s.html';
+var Test_file_2   = 'abc/test/11.jpg';
 
 
-function chk_file_objs(){
-    getfile.get_file_objs_by_path(Test_file_1, function(err, files){
+function chk_file_objs(full_path){
+    var full_path = full_path || Test_file_1;
+
+    getfile.get_file_objs_by_path(full_path, function(err, files){
         if(err){p('chk file objs failed, ', err); return stop();}
 
         //p('1 st check: ', err, files);
@@ -47,8 +50,24 @@ function chk_file_objs(){
 }
 
 
+function chk_file_obj(full_path){
+    var full_path = full_path || Test_file_1;
+    getfile.get_1st_file_obj_by_path(full_path, function(err, file){
+        if(err){p('chk get 1st file obj failed, ', err); return stop();}
+
+        //p('1 st check: ', err, file);
+        p('u.isArray(file)'); p(u.isArray(file));
+        //p(file);
+        p(u.keys(file).sort().join(" \t "));
+
+        stop();
+    });
+}
+
 if(require.main === module){
-    chk_file_objs();
+    //chk_file_objs();
+
+    chk_file_obj(Test_file_2);
 }
 
 

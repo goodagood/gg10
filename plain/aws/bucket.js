@@ -1510,13 +1510,13 @@ function test_update_json(){
 //}
 
 
-// 2015, 0519
+// 2015, 0519; 1031;
 function s3_object_read_stream(key){
     if (!key) throw new Exception('can you give an s3 key to "s3 object read stream" in bucket.js?');
 
-    var s3 = new AWS.S3();
+    //var s3 = new AWS.S3();
     var s3 = s3a.get_s3_obj();
-    var params = {Bucket: myconfig.root_bucket, Key: key};
+    var params = {Bucket: root_bucket, Key: key};
 
     return s3.getObject(params).createReadStream();
 }

@@ -292,6 +292,24 @@ make_s3folder = (folder_path) ->
         )
 
 
+    get_1st_file_obj = (name, callback) ->
+        # name is basename, no path included.
+        #p 'in get 1st file obj debugging: _meta_.path', _meta_.path
+        #p 'in get 1st file obj debugging 2: _meta_.files', _meta_.files
+        return callback('no such file: ' + name, null)  unless file_exists(name)
+
+        ulist = get_uuids(name)
+        p('ulist 1031: ', ulist)
+
+        if not ulist? or u.isEmpty(ulist)
+            err   = "Can not get uuid in folder #{_meta_.path}, in 'get file objs'."
+            return callback(err, null)
+
+        if not u.isArray(ulist)
+            err   = "uuid is not an array in folder #{_meta_.path}, in 'get file objs'."
+            return callback(err, null)
+      
+        uuid_to_file_obj ulist[0], callback
 
 
     retrieve_saved_meta = (callback) ->
@@ -1704,6 +1722,7 @@ make_s3folder = (folder_path) ->
 
     _folder_.get_file_objs          = get_file_objs
     _folder_.get_file_objs_by_name  = get_file_objs
+    _folder_.get_1st_file_obj       = get_1st_file_obj
     _folder_.get_one_file_obj       = get_one_file_obj
     _folder_.promise_to_one_file_obj= promise_to_one_file_obj
     _folder_.get_uuids              = get_uuids

@@ -64,12 +64,32 @@ function file_path_exists(path_, callback){
     //});
 }
 
+
+function get_folder_for_file(file_path, callback){
+    if (!u.isString(file_path)) return callback('give file path string');
+
+    var name = path.basename(file_path);
+    var cwd  = path.dirname (file_path);
+    //p('0814 1143 name, cwd: ', name, cwd);
+    if(!cwd) return callback('got no cwd, how to get folder?');
+
+    folder_module.retrieve_folder(cwd).then(function(folder){
+        //p('retrieve folder, keys: ', u.keys(folder).sort().join(', '));
+        //p('folder get file objs is function? ', u.isFunction(folder.get_file_objs));
+        //p('--folder path: ', folder.get_meta().path);
+
+        if(!u.isFunction(folder.get_1st_file_obj)) return callback('not a function: get_1st_file_obj');
+        return callback(null, folder);
+    }).catch(callback);
+}
+
+
 function get_file_objs_by_path(file_path, callback){
     if (!u.isString(file_path)) return callback('give file path string');
 
     var name = path.basename(file_path);
     var cwd  = path.dirname (file_path);
-    p('0814 1143 name, cwd: ', name, cwd);
+    //p('0814 1143 name, cwd: ', name, cwd);
 
     folder_module.retrieve_folder(cwd).then(function(folder){
         //p('retrieve folder, keys: ', u.keys(folder).sort().join(', '));
@@ -84,15 +104,28 @@ function get_file_objs_by_path(file_path, callback){
 
 
 function get_1st_file_obj_by_path(file_path, callback){
-    //p('what happens? file path', file_path );
-    get_file_objs_by_path(file_path, function(err, objs){
+    var file_name = path.basename(file_path);
+    if(!file_name) return callback('got no file name, how to get file?');
+    return  get_folder_for_file(file_path, function(err,  folder){
         if(err){
-            p('0817 1:27, in get 1st file obj by path in get objs, you got this? ', err);
+            p('1031 0219am, in get 1st file obj by path, you got this? ', err);
             return callback(err);
         }
 
-        callback(err, objs[0]);
+        folder.get_1st_file_obj(file_name, callback);
     });
+
+    ////p('what happens? file path', file_path );
+    //get_file_objs_by_path(file_path, function(err, objs){
+    //    if(err){
+    //        p('0817 1:27, in get 1st file obj by path in get objs, you got this? ', err);
+    //        return callback(err);
+    //    }
+
+    //    if(objs.length < 1) return callback('no file obj found when get 1st file obj by path, 1031');
+
+    //    callback(err, objs[0]);
+    //});
 }
 
 

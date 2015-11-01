@@ -140,11 +140,11 @@ router.get(/^\/get\/(.+)/, function(req, res, next){
       if(!full_path) return res.send("<h1> no file path found in the Url</h1> ");
       var cwd       = path.dirname (full_path);
       var filename  = path.basename(full_path);
-      p(full_path, cwd);
+      p('u f c: ', username, full_path, cwd);
 
       var headers = {};
 
-      get_file.get_1st_file_obj_by_path(full_path, function(err, file){
+      return get_file.get_1st_file_obj_by_path(full_path, function(err, file){
           if(err){
               p(404);
               res.writeHead(404, {});
@@ -153,9 +153,11 @@ router.get(/^\/get\/(.+)/, function(req, res, next){
           // res.writeHead?
 
           var meta = file.get_meta();
-          p('meta: ', u.pick(meta, 'type', 'filetype', 'size'));
+          p('meta: ', u.pick(meta, 'type', 'filetype', 'size', 'uuid'));
           headers  = make_headers_from_meta(meta);
           res.writeHead(200, headers);
+          p('res.writeHead(200, headers), ok?');
+
           file.read_stream().pipe(res);
       });
 });
@@ -177,9 +179,7 @@ router.get(/^\/get-with-local-files\/(.+)/, function(req, res, next){
       var full_path = req.params[0];
       p('full path: ', full_path);
 
-      if (!full_path) {
-        return res.send('<h1> err, no full_path </h1>');
-      }
+      if (!full_path) return res.send('<h1> err, no full_path </h1>');
 
       //var filename = path.basename(full_path);
 
@@ -217,6 +217,15 @@ router.get(/^\/convert-relative-pathes\/(.+)/, function(req, res, next){
           res.send(html);
       });
 });
+
+
+/*
+ * check this path works, /file/1031
+ */
+router.get("/1031", function(req, res, next){
+    res.end('<h1>this is 1031</h1>');
+});
+
 
 /*
  * local file --> file web page
@@ -273,7 +282,7 @@ function make_headers_from_meta(meta){
     //headers['Etag'] = meta.size; //
     //headers['Last-Modified'] = meta['lastmodified']; //
 
-    p('headers: ', headers);
+    p('mk headers from meta, 1031: ', headers);
     return headers;
 }
 

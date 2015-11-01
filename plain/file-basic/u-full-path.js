@@ -1,3 +1,4 @@
+var fs = require('fs');
 
 var full_the_path = require('./full-path.js');
 var getfile = require("../aws/get-file.js");
@@ -13,9 +14,13 @@ function chk_get_converted(test_file_full_path){
     full_the_path.get_html_converted(fpath, function(err, html){
         if(err){ p('oo, err: ', err); return setTimeout(process.exit, 2000);}
 
-        p('html: ', html);
+        p('html: ');
+        //p('html: ', html);
 
-        process.exit(2000);
+        fs.writeFile('/tmp/ghc1031.html', html, 'utf-8', function(err, what){
+            if(err){ p('oo2, err: ', err); return setTimeout(process.exit, 2000);}
+            process.exit();
+        });
     });
 }
 
@@ -27,7 +32,8 @@ if(require.main === module){
 
 function drop_a_file_into_repl(o, file_path){
     o   = o   || this;
-    file_path =  file_path || 'abc/test/small3.mp4';
+    //file_path =  file_path || 'abc/test/small3.mp4';
+    file_path =  file_path || Test_file_1;
 
     p('going to get the first file obj: ', file_path);
     p('to populate the obj: ', o);
@@ -66,8 +72,8 @@ function drop_steps(o, file_path){
 }
 
 
-var doft = full_the_path; // I really hate the name;
-var o = {}; drop_a_file_into_repl(o, Test_file_1);
+//var doft = full_the_path; // I really hate the name;
+//var o = {}; drop_a_file_into_repl(o, Test_file_1);
 
 // a signal to 'expect'
-console.log("ok start interact:");
+//console.log("ok start interact:");

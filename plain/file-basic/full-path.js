@@ -11,7 +11,9 @@
 var path = require("path");
 
 var get_file = require("../aws/get-file.js");
-var bucket2  = require("gg-credentials").bucket;
+var bucket   = require("../aws/bucket.js");
+
+var bucket2  = require("gg-credentials").bucket; //d
 
 var p = console.log;
 
@@ -126,7 +128,7 @@ function get_html_converted(file_full_path, callback){
             if(html_converted.html) return callback(null, html_converted.html);
             if(html_converted.s3key){
                 p('to read html_converted.. s3');
-                return bucket2.read_to_string(html_converted.s3key, function(err, str){
+                return bucket.read_to_string(html_converted.s3key, function(err, str){
                     if (err) { return callback("<h1> failed to read the object</h1> " + file_full_path); }
 
                     return callback(null, str);

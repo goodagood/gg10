@@ -27,7 +27,7 @@
   p = console.log;
 
   make_s3folder = function(folder_path) {
-    var add_file, add_file_save_folder, add_folder, build_file_list, calculate_folder_meta_s3key, callback_folder_auxiliary_path, callback_milli_uuid, check_username, clear_empty_names, clear_file_meta, del_uuid_and_name, delete_all_uuid_recursively, delete_file, delete_file_by_uuid, delete_folder, delete_name, delete_uuid, delete_uuid_in_hash_of_file_names, delete_uuid_without_save, file_exists, file_identified_by_uuid, folder_milli_uuid, folder_uuid, get_file_name_array, get_file_obj_by_uuid, get_file_objs, get_file_objs_by_name, get_folder, get_folder_auxiliary_path, get_member_manager, get_meta, get_number_of_name, get_one_file_obj, get_owner_id, get_owner_name, get_recent_file_by_name, get_root_name, get_ul_renderring, get_uuids, init, is_name_in_meta_files, is_name_unique, is_owner, list_file_tmp, list_files, list_files_and_save, list_files_for_owner, list_files_for_viewer, lock, lock_async, locker, make_template_data, members, name_to_metas, name_to_uuids, old_build_blueimp_pic_gallery_list, old_get_file_objs_by_name, pattern_to_uuids, prepare_basic_path, promise_to_add_file_save_folder, promise_to_clear_empty_names, promise_to_delete_file_by_uuid, promise_to_delete_name, promise_to_give_obj, promise_to_list_files_and_save, promise_to_one_file_obj, promise_to_retrieve_saved_meta, promise_to_save_meta, promise_to_write_meta, read_file, read_file_12_15, read_file_by_uuid, read_files, read_in_template, read_recent_file_by_name, read_text, render_template, retrieve_saved_meta, save_meta, self_render_as_a_file, set_attr, sort_files, sort_files_by_date, try_template, update_file, update_name, update_sub_folder, update_uuid_storage, user_module, uuid_to_delete_file_fun, uuid_to_file_obj, uuid_to_meta, write_meta, write_text_file, _add_extra_0929, _add_file_obj_save_folder, _add_file_thorough, _add_file_to_redis_list, _build_blueimp_pic_gallery_list, _check_in_file, _d_read_file, _delete_file, _dot_filter, _empty_promise, _folder_, _folder_css_file_name_, _get_files_by_name, _get_owner_obj, _get_renderring_for_public, _get_renderring_for_viewer, _get_short_json_repr, _get_uuids, _give_ul_renderring, _list_files_by_id, _member_, _meta_, _meta_css_file_name_, _meta_smells, _new_json_file, _old_get_folder_auxiliary_path, _prepare_redis_file_list_key, _ready_, _rename_file, _render_all_files, _render_file, _render_folder, _short_clone_of_folder_meta, _sleep, _template_file_;
+    var add_file, add_file_save_folder, add_folder, build_file_list, calculate_folder_meta_s3key, callback_folder_auxiliary_path, callback_milli_uuid, check_username, clear_empty_names, clear_file_meta, del_uuid_and_name, delete_all_uuid_recursively, delete_file, delete_file_by_uuid, delete_folder, delete_name, delete_uuid, delete_uuid_in_hash_of_file_names, delete_uuid_without_save, file_exists, file_identified_by_uuid, folder_milli_uuid, folder_uuid, get_1st_file_obj, get_file_name_array, get_file_obj_by_uuid, get_file_objs, get_file_objs_by_name, get_folder, get_folder_auxiliary_path, get_member_manager, get_meta, get_number_of_name, get_one_file_obj, get_owner_id, get_owner_name, get_recent_file_by_name, get_root_name, get_ul_renderring, get_uuids, init, is_name_in_meta_files, is_name_unique, is_owner, list_file_tmp, list_files, list_files_and_save, list_files_for_owner, list_files_for_viewer, lock, lock_async, locker, make_template_data, members, name_to_metas, name_to_uuids, old_build_blueimp_pic_gallery_list, old_get_file_objs_by_name, pattern_to_uuids, prepare_basic_path, promise_to_add_file_save_folder, promise_to_clear_empty_names, promise_to_delete_file_by_uuid, promise_to_delete_name, promise_to_give_obj, promise_to_list_files_and_save, promise_to_one_file_obj, promise_to_retrieve_saved_meta, promise_to_save_meta, promise_to_write_meta, read_file, read_file_12_15, read_file_by_uuid, read_files, read_in_template, read_recent_file_by_name, read_text, render_template, retrieve_saved_meta, save_meta, self_render_as_a_file, set_attr, sort_files, sort_files_by_date, try_template, update_file, update_name, update_sub_folder, update_uuid_storage, user_module, uuid_to_delete_file_fun, uuid_to_file_obj, uuid_to_meta, write_meta, write_text_file, _add_extra_0929, _add_file_obj_save_folder, _add_file_thorough, _add_file_to_redis_list, _build_blueimp_pic_gallery_list, _check_in_file, _d_read_file, _delete_file, _dot_filter, _empty_promise, _folder_, _folder_css_file_name_, _get_files_by_name, _get_owner_obj, _get_renderring_for_public, _get_renderring_for_viewer, _get_short_json_repr, _get_uuids, _give_ul_renderring, _list_files_by_id, _member_, _meta_, _meta_css_file_name_, _meta_smells, _new_json_file, _old_get_folder_auxiliary_path, _prepare_redis_file_list_key, _ready_, _rename_file, _render_all_files, _render_file, _render_folder, _short_clone_of_folder_meta, _sleep, _template_file_;
     _folder_ = {};
     _meta_ = {};
     _member_ = null;
@@ -209,6 +209,23 @@
         return callback(err, null);
       }
       return async.map(ulist, uuid_to_file_obj, callback);
+    };
+    get_1st_file_obj = function(name, callback) {
+      var err, ulist;
+      if (!file_exists(name)) {
+        return callback('no such file: ' + name, null);
+      }
+      ulist = get_uuids(name);
+      p('ulist 1031: ', ulist);
+      if ((ulist == null) || u.isEmpty(ulist)) {
+        err = "Can not get uuid in folder " + _meta_.path + ", in 'get file objs'.";
+        return callback(err, null);
+      }
+      if (!u.isArray(ulist)) {
+        err = "uuid is not an array in folder " + _meta_.path + ", in 'get file objs'.";
+        return callback(err, null);
+      }
+      return uuid_to_file_obj(ulist[0], callback);
     };
     retrieve_saved_meta = function(callback) {
       var folder_meta_key;
@@ -1424,6 +1441,7 @@
     _folder_.uuid_to_file_obj = uuid_to_file_obj;
     _folder_.get_file_objs = get_file_objs;
     _folder_.get_file_objs_by_name = get_file_objs;
+    _folder_.get_1st_file_obj = get_1st_file_obj;
     _folder_.get_one_file_obj = get_one_file_obj;
     _folder_.promise_to_one_file_obj = promise_to_one_file_obj;
     _folder_.get_uuids = get_uuids;
