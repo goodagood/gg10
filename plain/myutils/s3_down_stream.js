@@ -17,6 +17,9 @@ var folder_module = require("../aws/folder-v5.js");
 var myconfig =   require("../config/config.js");
 AWS.config.region = myconfig.region;
 
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
+
 
 
 
@@ -510,7 +513,7 @@ function _s3_file_read_stream(key){
     var s3 = new AWS.S3();
     if (!key) key = 'abc/Acts_01_00m_00s__00m_30s.mp3';
     //var params = {Bucket: 'ggfsa', Key: key};
-    var params = {Bucket: myconfig.root_bucket, Key: key};
+    var params = {Bucket: aws_conf.root_bucket, Key: key};
 
 
     // get s3 object, read the stream and pipe it to target stream?

@@ -11,8 +11,6 @@ var AWS = require('aws-sdk');  //d
 //var secrets  =  require("gg-credentials");
 
 var secrets  =  require("../config/secret-dir.js");
-
-
 var aws_conf =  secrets.conf.aws;
 
 var aws_keys =  aws_conf.keys;

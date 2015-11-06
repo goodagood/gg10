@@ -124,15 +124,25 @@ function init_user_d(user_info, callback){
   });
 }
 
-function save_user_to_redis(user_info, callback){
-  rclient.hmset(user_info.username, user_info, function(err, reply){
-    console.log("in users/a.js, 'save user to redis', hmset, err reply: ",err, reply);
-    if (err) { return callback(err, null); }
 
-    add_name_to_user_roll(user_info.username, function(err, whatever){
-      console.log("in users/a.js, 'save user to redis', add name to user roll, err whatever: ",err, whatever);
-      if(err) return callback(err, whatever);
-      callback(null, user_info);
+/*
+ * Change to hash password, 2015 1106
+ * add the: hash pass # hash_password_for_userinfo
+ */
+function save_user_to_redis(user_info, callback){
+  var hash_pass = require("./hash-pass.js");
+  hash_pass.hash_password_for_userinfo(user_info, function(err, user_hash){
+    if (err) { return callback(err, null); }
+    // The parameter user info has been modified, it's been called user_hash now:
+    rclient.hmset(user_hash.username, user_hash, function(err, reply){
+      console.log("in users/a.js, 'save user to redis', hmset, err reply: ",err, reply);
+      if (err) { return callback(err, null); }
+
+      add_name_to_user_roll(user_hash.username, function(err, whatever){
+        console.log("in users/a.js, 'save user to redis', add name to user roll, err whatever: ",err, whatever);
+        if(err) return callback(err, whatever);
+        callback(null, user_hash);
+      });
     });
   });
 }

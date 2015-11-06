@@ -17,6 +17,8 @@ var secrets = require("../config/secret-dir.js");
 var redis_host = secrets.conf.redis.redis_host;
 var redis_port = secrets.conf.redis.redis_port;
 
+var aws_conf   =  secrets.conf.aws;
+
 //var redis_host = myconfig.redis_host,
 //    redis_port = myconfig.redis_port;
 
@@ -45,7 +47,7 @@ function set_user_info(user_info, callback){
         // Name not exists:
         user_info['what']      = myconfig.IamUserInfo;
         user_info['storage']   = "s3";
-        user_info['s3-bucket'] = myconfig.root_bucket;
+        user_info['s3-bucket'] = aws_conf.root_bucket;
 
         console.log("init user redis, set user info, ..  user info: ", user_info);
 

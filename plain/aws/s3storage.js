@@ -5,6 +5,9 @@
 
 var bucket = require('./bucket.js');
 
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
+
 function make_s3storage(_meta, callback){
   // 's3storage' represents a single s3 object, it trys to offer unified
   // api to read, write, delete storage.
@@ -36,7 +39,7 @@ function make_s3storage(_meta, callback){
   function _get_read_stream(){
 
     var s3 = new AWS.S3();
-    var params = {Bucket: myconfig.root_bucket, Key: _meta.key};
+    var params = {Bucket: aws_conf.root_bucket, Key: _meta.key};
 
     // get s3 object, read the stream and pipe it to target stream
     return s3.getObject(params).createReadStream();

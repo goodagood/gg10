@@ -20,6 +20,11 @@ var iroot = require("../aws/init-root.js");
 
 var user = require("../users/a.js");
 
+
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
+
+
 //var bucket = require("../aws/bucket.js");
 var tutil  = require ("../myutils/test-util.js");
 
@@ -343,7 +348,9 @@ if(require.main === module){
     //get_serial_num();
     //check_prepare_home();
 
-    check_list_prepared_user_ids();
+    //check_list_prepared_user_ids();
+    chk_user_roll();
+
     //prepare_more_home();
 
     //check_add2list('20');
@@ -352,7 +359,6 @@ if(require.main === module){
     //change_19_public('19/public', o);
 
     //check_set_owner();
-    //chk_user_roll();
 
     //list_all_roots();
     //all_user_get_id();
@@ -390,6 +396,7 @@ function drop_a_root_dir(dir, o){
 
 
 // drop into REPL, 'init user d' in ../user/a.js
+// looks not finished, don't know why, 2015 1106
 function drop_init_user_d(username, o){
     if(!username) return p('make sure your know the __ username __, \n' +
             'we are going to init the user, \n' +
@@ -406,38 +413,40 @@ function drop_init_user_d(username, o){
     //    stop();
     //});
 
-    //user.is_name_occupied(user_info.username, function(err, name_exists){
-    //    //console.log("11 init user c, and username: ", user_info.username);
-    //    console.log("111 drop init user d, err name_exists: ",err, name_exists);
-    //    if(err) return ( callback(err, null) );
+    user.is_name_occupied(user_info.username, function(err, name_exists){
+        //console.log("11 init user c, and username: ", user_info.username);
+        if(err){
+            console.log("111, 1106 drop init user d, err : ",err);
+            return ( callback(err, null) );
+        }
+        console.log("111 drop init user d, name_exists: ", name_exists);
 
-    //    if(name_exists) return (callback(new Error('username conflict'), null));
+        if(name_exists) return (callback(new Error('username conflict'), null));
 
         // Name not exists:
         user_info['what'] = "user_information";
         user_info['storage'] = "s3";
-        user_info['s3-bucket'] = myconfig.root_bucket;
+        user_info['s3-bucket'] = aws_conf.root_bucket;
 
-        console.log("22 in init user d, user info ", user_info);
-        var home_id = '24'; //must be string.
+        //console.log("22 in init user d, user info ", user_info);
+        //var home_id = '24'; //must be string.
 
-        user_info['id'] = home_id;
-        console.log("user_info"); console.log(user_info);
+        //user_info['id'] = home_id;
+        //console.log("user_info"); console.log(user_info);
 
-        o.uinfo = user_info;
-        o.client = user.rclient;
-        user.rclient.hmset(user_info.username, user_info, function(err, reply){
-            p('hmset got err reply: ', err, reply);
-        });
-    //});
-
-
+        //o.uinfo = user_info;
+        //o.client = user.rclient;
+        // not to do change, 2015 1106
+        //user.rclient.hmset(user_info.username, user_info, function(err, reply){
+        //    p('hmset got err reply: ', err, reply);
+        //});
+    });
 }
 
 
 //var o={}; change_19_public(null, o);
 //var o={}; drop_a_root_dir('33', o);
 
-//var o={}; drop_init_user_d('af', o);
-
+var o={}; drop_init_user_d('ar', o);
+p( "ok start interact:");
 

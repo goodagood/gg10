@@ -52,10 +52,10 @@ function check_pass(userinfo, password, done){
     if(!userinfo['username']) return done('no username in userinfo, hash-pass.js');
     var username = userinfo['username'];
 
-    if(!userinfo['salted-hash']) return done('no salted hash for user: ' + username);
+    if(!userinfo[Salted_hash_name]) return done('no salted hash for user: ' + username);
     if(!password) return done('can you give me a password for user: ' + username);
 
-    var hash = userinfo['salted-hash'];
+    var hash = userinfo[Salted_hash_name];
 
     bcrypt.compare(password, hash, function(err, res) {
         p('828 compare .. ', err,  res);
@@ -91,16 +91,34 @@ function set_salted_hash_if_plain_password(username, callback){
             if(err) return callback(err);
 
             p('hash is : ', hash);
-            user['salted-hash'] = hash;
-            rclient.hset(user.username, 'salted-hash', hash, callback);
+            user[Salted_hash_name] = hash;
+            rclient.hset(user.username, Salted_hash_name, hash, callback);
         });
     });
 }
 
 
+function hash_password_for_userinfo(user_info, callback){
+    p('got user info: ', user_info);
+    bcrypt.hash(user_info.password, Salt_length, function(err, hash){
+        if(err) return callback(err);
+
+        //p('hash is : ', hash);
+        user_info[Salted_hash_name] = hash;
+
+        p('pass user info: ', user_info);
+
+        callback(null, user_info);
+    });
+}
+
+
+
 
 module.exports.find_and_check = find_and_check;
 module.exports.set_salted_hash_if_plain_password = set_salted_hash_if_plain_password;
+
+module.exports.hash_password_for_userinfo = hash_password_for_userinfo;
 
 //module.exports.check_password = check_password;
 

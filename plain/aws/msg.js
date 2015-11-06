@@ -18,7 +18,6 @@ var myutil = require('../myutils/myutil.js');
 AWS.config.region = myconfig.region;
 var s3 = new AWS.S3();
 
-var root_bucket = myconfig.root_bucket;
 
 var default_user_home_tree = require('./user-home-structure.js');
 var image = require('./image.js');

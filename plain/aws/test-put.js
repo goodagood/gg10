@@ -5,10 +5,14 @@ var AWS = require('aws-sdk');
 var fs  = require('fs');
 var path  = require('path');
 
-// set up aws region:
-AWS.config.region = myconfig.region;
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
 
-var root_bucket = myconfig.root_bucket;
+// set up aws region:
+AWS.config.region = aws_conf.region;
+
+
+var root_bucket = aws_conf.root_bucket;
 
 function put_file(file, cwd){
     var s3key = path.join(cwd, file.name);
