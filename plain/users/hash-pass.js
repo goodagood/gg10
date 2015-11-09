@@ -103,8 +103,11 @@ function hash_password_for_userinfo(user_info, callback){
     bcrypt.hash(user_info.password, Salt_length, function(err, hash){
         if(err) return callback(err);
 
-        //p('hash is : ', hash);
+        p('hash is : ', hash);
         user_info[Salted_hash_name] = hash;
+
+        // let's delete the plain text password
+        if(user_info.password) delete user_info.password;
 
         p('pass user info: ', user_info);
 
@@ -148,7 +151,7 @@ function check_set_salt(username){
 
 if(require.main === module){
     p('yes');
-    check_find_and_check('andrew');
-    //check_set_salt();
+    //check_find_and_check('andrew');
+    check_set_salt('ar');
 }
 

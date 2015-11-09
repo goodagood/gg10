@@ -395,9 +395,9 @@ function drop_a_root_dir(dir, o){
 }
 
 
-// drop into REPL, 'init user d' in ../user/a.js
-// looks not finished, don't know why, 2015 1106
-function drop_init_user_d(username, o){
+// drop into REPL, 'init user d' in ../user/a.js, it will check name length,
+// This will not.  because we use occupy_room
+function drop_occupy_room(username, o){
     if(!username) return p('make sure your know the __ username __, \n' +
             'we are going to init the user, \n' +
             'with "users/a.js # init_user_d \n');
@@ -408,38 +408,41 @@ function drop_init_user_d(username, o){
         password: 'kkkooo',
         referrer: 'andrew'
     };
-    //user.init_user_d(user_info, function(err, uinfo){
-    //    p('after "init user d", got: ', err, uinfo);
-    //    stop();
-    //});
+    o.user_info = user_info;
+
+    user.occupy_room(user_info, function(err, uinfo){
+        if(err){
+            console.log("i u d, 1106 drop init user d, err : ",err);
+            o.err = err;
+        }
+        p('after "init user d", got: ', uinfo);
+
+        o.ui = uinfo;
+    });
+}
+
+
+// checking drop user: ar, id: 43, all must be string.
+function repare(username, o){
+    username = username || 'ar';
 
     user.is_name_occupied(user_info.username, function(err, name_exists){
         //console.log("11 init user c, and username: ", user_info.username);
         if(err){
-            console.log("111, 1106 drop init user d, err : ",err);
-            return ( callback(err, null) );
+            p('is name occupied get err: ', err);
+            return o.ierr = err;
         }
-        console.log("111 drop init user d, name_exists: ", name_exists);
+        console.log("see, init user d, name_exists: ", name_exists);
+        if(name_exists) return p('new Error("username conflict"), null');
 
-        if(name_exists) return (callback(new Error('username conflict'), null));
-
-        // Name not exists:
-        user_info['what'] = "user_information";
-        user_info['storage'] = "s3";
-        user_info['s3-bucket'] = aws_conf.root_bucket;
-
-        //console.log("22 in init user d, user info ", user_info);
-        //var home_id = '24'; //must be string.
-
-        //user_info['id'] = home_id;
-        //console.log("user_info"); console.log(user_info);
-
-        //o.uinfo = user_info;
-        //o.client = user.rclient;
-        // not to do change, 2015 1106
-        //user.rclient.hmset(user_info.username, user_info, function(err, reply){
-        //    p('hmset got err reply: ', err, reply);
-        //});
+        user.find_by_user_name(username, function(err, user_info){
+            if(err){
+                console.log("c a 4, 1106 k c u i 915pm   , err : ",err);
+                return process.exit();
+            }
+            o.ui = user_info;
+            p('ca4o user info: ', user_info);
+        });
     });
 }
 
@@ -447,6 +450,7 @@ function drop_init_user_d(username, o){
 //var o={}; change_19_public(null, o);
 //var o={}; drop_a_root_dir('33', o);
 
-var o={}; drop_init_user_d('ar', o);
+//var o={}; drop_occupy_room('ar', o);
+var o={}; repare('ar', o);
 p( "ok start interact:");
 

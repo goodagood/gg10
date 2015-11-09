@@ -1846,16 +1846,16 @@ retrieve_folder_meta = (folder_path) ->
 
 
 #doing
-build_new_folder_and_save = (opt, callback)->
+build_new_folder_and_save = (opt)->
     make_s3folder(opt.path).then(
         (folder)->
             folder.init(opt)
-            folder
+            return folder
     ).then(
         (folder)->
             folder.self_render_as_a_file()
             #folder.save_meta(callback)
-            folder
+            folder.promise_to_list_files_and_save()
     )
 
 
@@ -2008,11 +2008,12 @@ new_folder = (opt_, callback) ->
 
 
 make_folder_meta_file_s3key = (folder_path) ->
-    
     #
     # ... but we changed the folder meta # prefix setting,
     # this gives the new key. 0918.
     # Give a folder path, calculate it's s3key of meta data file.
+    #
+    # Am I reading this over 12 monthes? 2015 1107
     #
     s3key = path.join(myconfig.folder_meta_prefix, folder_path)
     return s3key
@@ -2240,6 +2241,9 @@ peek_possible_exist_folder = (folder_path, callback) ->
 
 
 #module.exports.old = old
+
+module.exports.make_s3key_for_folder_meta_file = make_folder_meta_file_s3key
+
 
 module.exports.make_s3folder = make_s3folder
 module.exports.make_promisified_s3folder = make_promisified_s3folder

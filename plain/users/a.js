@@ -7,6 +7,9 @@ var u    = require('underscore');
 
 var conf =   require("../config/config.js");
 
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
+
 //var s3folder = require("../aws/folder.js");
 var bucket = require("../aws/bucket.js");
 
@@ -97,21 +100,26 @@ var phome = require("../aws/prepare-home.js");
  *   callback(err, user_obj)
  */ 
 function init_user_d(user_info, callback){
-  if(user_info.username.length < 3) return callback('name occupied', null);
+  if(user_info.username.length < 3) return callback('The name occupied', null);
 
+  occupy_room(user_info, callback);
+}
+
+
+function occupy_room(user_info, callback){
   is_name_occupied(user_info.username, function(err, name_exists){
     //console.log("11 init user c, and username: ", user_info.username);
-    console.log("111 init user d, name_exists: ", name_exists);
-    if(err) return ( callback(err, null) );
+    if(err) return callback(err, null);
+    console.log("1106 1002p occupy room, name_exists: ", name_exists);
 
     if(name_exists) return (callback(new Error('username conflict'), null));
 
     // Name not exists:
     user_info['what'] = "user_information";
     user_info['storage'] = "s3";
-    user_info['s3-bucket'] = conf.root_bucket;
+    user_info['s3-bucket'] = aws_conf.root_bucket;
 
-    console.log("in init user d, before get hid, user info ", user_info);
+    console.log("in occupy room, before get hid, user info ", user_info);
     phome.get_one_prepared_home_id(user_info.username, function(err, home_id){
       if(err) return callback(err, 'err when "get one prepared home id"');
 
@@ -132,15 +140,24 @@ function init_user_d(user_info, callback){
 function save_user_to_redis(user_info, callback){
   var hash_pass = require("./hash-pass.js");
   hash_pass.hash_password_for_userinfo(user_info, function(err, user_hash){
-    if (err) { return callback(err, null); }
+    if (err) {
+      p('in save u t r, h p . h p f u : err: ', err);
+      return callback(err, null);
+    }
     // The parameter user info has been modified, it's been called user_hash now:
     rclient.hmset(user_hash.username, user_hash, function(err, reply){
-      console.log("in users/a.js, 'save user to redis', hmset, err reply: ",err, reply);
-      if (err) { return callback(err, null); }
+      if (err) {
+        p('rclient hmset, in save ... to redis, 1106, err:', err);
+        return callback(err, null);
+      }
+      //console.log("in users/a.js, 'save user to redis', hmset, err reply: ",err, reply);
 
       add_name_to_user_roll(user_hash.username, function(err, whatever){
-        console.log("in users/a.js, 'save user to redis', add name to user roll, err whatever: ",err, whatever);
-        if(err) return callback(err, whatever);
+        if(err){
+          p('add name to user roll, 1106, err: ', err);
+          return callback(err, whatever);
+        }
+        //console.log("in users/a.js, 'save user to redis', add name to user roll, whatever: ", whatever);
         callback(null, user_hash);
       });
     });
@@ -169,6 +186,8 @@ function assign_user_home(username, home_id, callback){
   //});
 }
 
+
+// going to be moved to ./validate-name.js
 function is_name_occupied(username, callback){
   rclient.exists(username, function(err, name_exists){
     if(err) { callback(err, true); return;}
@@ -388,7 +407,11 @@ module.exports.set_user_info_attr = set_user_info_attr;
 module.exports.set_user_info_attrs = set_user_info_attrs;
 module.exports.assign_user_home = assign_user_home;
 
+// 2015 1106
+module.exports.occupy_room = occupy_room;
+
 //for debuging:
 module.exports.rclient = rclient;
+module.exports.save_user_to_redis = save_user_to_redis;
 
 // vim: set et ts=2 sw=2 fdm=indent:

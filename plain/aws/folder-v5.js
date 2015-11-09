@@ -1530,13 +1530,13 @@
     });
   };
 
-  build_new_folder_and_save = function(opt, callback) {
+  build_new_folder_and_save = function(opt) {
     return make_s3folder(opt.path).then(function(folder) {
       folder.init(opt);
       return folder;
     }).then(function(folder) {
       folder.self_render_as_a_file();
-      return folder;
+      return folder.promise_to_list_files_and_save();
     });
   };
 
@@ -1817,6 +1817,8 @@
     folder_meta_key = make_folder_meta_file_s3key(folder_path);
     return bucket.s3_object_exists(folder_meta_key, callback);
   };
+
+  module.exports.make_s3key_for_folder_meta_file = make_folder_meta_file_s3key;
 
   module.exports.make_s3folder = make_s3folder;
 

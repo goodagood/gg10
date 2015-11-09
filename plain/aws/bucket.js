@@ -170,6 +170,76 @@ function read_obj(s3key, callback){
 }
 
 
+// Interface to s3 api, with root bucket.
+function s3list(prefix, callback){
+
+    var params = {
+        Bucket : root_bucket,
+        Prefix : prefix,
+    };
+
+    var s3 = s3a.get_s3_obj();
+    s3.listObjects(params, callback);
+}
+
+
+/*
+ * keep in using, 2015 1107
+ * no:
+ *   replaced by list2. 0601
+ *   @prefix should contain username
+ *   used as tool by other listing functions. 0618.
+ *
+ * list objects in the bucket, with the prefix, callback get:
+ *
+ * data['Contents'] is an array like:
+
+   [ { Key: 'tmp/',
+       LastModified: Tue Apr 15 2014 08:18:59 GMT+0000 (UTC),
+       ETag: '"d41d8cd98f00b204e9800998ecf8427e"',
+       Size: 0,
+       Owner: [Object],
+       StorageClass: 'STANDARD' }, ...... ]
+
+ */
+function list(prefix, callback){
+
+  //var params = {
+  //    Bucket : root_bucket,
+  //    //Prefix : 'tmp',
+  //    Prefix : prefix,
+  //};
+
+  ////var s3 = new AWS.S3();
+  //var s3 = s3a.get_s3_obj();
+  //s3.listObjects(params, function(err, data) {
+  //    //console.log('---');
+  //    //console.log(data);
+  //    callback(err, data['Contents']);
+  //});
+
+
+  // modified to use s3list
+  s3list(prefix, function(err, data) {
+    if(err) return callback(err);
+
+    callback(err, data['Contents']);
+  });
+}
+
+
+function get_object(s3key, callback){
+  // callback is from aws s3, callback(err, data)
+  //var s3 = new AWS.S3();
+  var s3 = s3a.get_s3_obj();
+  var params = {
+    Bucket: root_bucket,
+    Key:    s3key,
+  };
+  s3.getObject(params, callback);
+}
+
+
 // 2015 1022e end of moving back
 
 
@@ -233,41 +303,6 @@ function read_obj(s3key, callback){
 //}
 //
 
-//d
-/*
- * replaced by list2. 0601
- * used as tool by other listing functions. 0618.
- *
- * list objects in the bucket, with the prefix
- * @prefix should contain username
- */
-function list(prefix, callback){
-
-    var params = {
-        Bucket : root_bucket,
-        //Prefix : 'tmp',
-        Prefix : prefix,
-    };
-
-    //var s3 = new AWS.S3();
-    var s3 = s3a.get_s3_obj();
-    s3.listObjects(params, function(err, data) {
-        //console.log('---');
-        //console.log(data);
-        callback(err, data['Contents']);
-        /*
-         * data['Contents'] is an array like:
-
-           [ { Key: 'tmp/',
-               LastModified: Tue Apr 15 2014 08:18:59 GMT+0000 (UTC),
-               ETag: '"d41d8cd98f00b204e9800998ecf8427e"',
-               Size: 0,
-               Owner: [Object],
-               StorageClass: 'STANDARD' }, ...... ]
-
-         */
-    });
-}
 
 
 ////d
@@ -897,16 +932,6 @@ function test_read_file(){
   });
 }
 
-function get_object(s3key, callback){
-  // callback is from aws s3, callback(err, data)
-  var s3 = new AWS.S3();
-    var s3 = s3a.get_s3_obj();
-  var params = {
-    Bucket: root_bucket,
-    Key:    s3key,
-  };
-  s3.getObject(params, callback);
-}
 
 
 function console_log_file(filepath){
@@ -1530,18 +1555,21 @@ module.exports.put_file_to_s3 = put_file_to_s3;
 module.exports.read_obj       = read_obj;
 module.exports.read_file      = read_file;
 module.exports.read_to_string = read_file;
-module.exports.write_text_file = write_text_file;
+module.exports.write_text_file= write_text_file;
 module.exports.delete_object  = delete_object;
 
+module.exports.s3list = s3list;
+module.exports.list   = list;
+
+module.exports.get_object = get_object;
+
 // before 1022
-module.exports.list = list;
 //module.exports.list2 = list2;
 //module.exports.list3 = list3; //d
 module.exports.list_messages = list_messages;
 //module.exports.put_file = put_file;
 module.exports.put_one_file = put_one_file;
 
-module.exports.get_object = get_object;
 
 
 module.exports.read_json = read_json;

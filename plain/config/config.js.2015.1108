@@ -23,13 +23,12 @@ config.logfile = '/tmp/logfile';
 
 
 // most default folders get ".g" prefix.
-// Plan to put all of this to folder: 'goodagood_' ...
-// 2015 1108, change to folder: .gg
+// Plan to put all of this to folder: 'goodagood_'
 config.default_folders = ['.gpublic', '.getc', '.gvid', '.gmsg', '.gtmp', '.gpic', '.gmusic'  ];
-config.default_gg_folder = '.gg';
-config.default_gg_sub_folders = ['public', 'etc'];
+config.default_goodagood_folder = 'goodagood_';
+config.default_goodagood_sub_folders = ['public', 'etc'];
 
-config.user_home_structure_file = ".gg/etc/home-structure.json"; //d
+config.user_home_structure_file = "goodagood/etc/home-structure.json";
 
 config.default_folder_options = {
   //owner : user_info.username,
@@ -61,14 +60,14 @@ config.new_meta_prefix = ".gg.new/";
 config.new_user_prefix = ".gg.new-user/";
 
 config.raw_files_folder = '.files'; //d?
-config.event_folder = '.gg/event';
-config.message_folder = '.gg/message';
-config.meta_folder = '.gg/.metas'; //d
-config.new_meta_folder = '.gg/.new'; //d
+config.event_folder = 'goodagood/event';
+config.message_folder = 'goodagood/message';
+config.meta_folder = 'goodagood/.metas'; //d
+config.new_meta_folder = 'goodagood/.new'; //d
 
 config.thumbnail_prefix = ".thumbnails/";
 
-config.income_folder = ".gg/.in";
+config.income_folder = "goodagood/.in";
 config.folder_option_file_name = ".folder_option.json";
 
 config.s3_stream_prefix = '/ss/';
@@ -89,7 +88,7 @@ config.muji_root = '/home/ubuntu/workspace/muji';
 config.swig_views_folder = 'swig-views';
 config.swig_views_folder_abs =  '/home/ubuntu/workspace/muji/plain/swig-views';
 
-config.value_folder = '.gg/.gg.value';
+config.value_folder = 'goodagood/.gg.value';
 config.value_adding_file_name = 'value-adding.json';
 config.comment_file_prefix = 'comment-';
 

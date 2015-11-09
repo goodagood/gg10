@@ -202,7 +202,7 @@ function check_rm_all_uuids(dir){
 }
 
 
-function check_rm_folder(dir, sub_folder_name){
+function chk_rm_folder(dir, sub_folder_name){
     dir = dir || 'abc/add-2/test';
     sub_folder_name = sub_folder_name || 'test-2';
 
@@ -238,8 +238,8 @@ if (require.main === module){
     //rm_a_root_folder();
     //rm_empty_home();
     //check_rm_all_uuids();
-    //check_rm_folder();
-    check_rm_home();
+    chk_rm_folder('intro', 'goodagood');
+    //check_rm_home();
 }
 
 

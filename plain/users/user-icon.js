@@ -53,6 +53,7 @@ var Icon_file_patterns = {
 function find_user_icon(options, callback){
     var username = options.username;
     if(!username) return callback('give me username, in find user icon', null);
+    if(username === 'anonymous') return callback('username is anonymous, in find user icon', null);
 
     user_module.get_user_id(username, function(err, id){
         if(err) return callback(err, null);

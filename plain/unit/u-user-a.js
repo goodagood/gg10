@@ -182,6 +182,103 @@ function chk_init_user_d(username){
     });
 }
 
+
+/*
+ * When checking with user 'ar', some thing wrong.
+ */
+function repare_ar(username){
+    username = username || 'ar';
+
+    // @user_info : hash {username:..., password:..., id:...,  referrer:...}
+    var user_info = {
+        username: username,
+        password: 'kkkooo',
+        referrer: 'andrew',
+        id: '43',
+
+    };
+
+    a.is_name_occupied(user_info.username, function(err, name_exists){
+        //console.log("11 init user c, and username: ", user_info.username);
+        if(err) return p('err: ',  err);
+        console.log("repare , name_exists: ", name_exists);
+        if(name_exists) {
+            p('1106 new Error("username conflict"), null');
+            return process.exit();
+        }
+
+        a.save_user_to_redis(user_info, function(err, uinfo){
+            if(err){
+                console.log("i u d, 1106 drop init user d, err : ",err);
+                return process.exit();
+            }
+            p('after "init user d", got: ', uinfo);
+            process.exit();
+        });
+    });
+}
+
+
+// keep repare/repair user 'ar' id '43'
+function check_ar_43(name){
+    username = name || 'ar';
+
+    // @user_info : hash {username:..., password:..., id:...,  referrer:...}
+    var user_info = {
+        username: username,
+        password: 'kkkooo',
+        referrer: 'andrew',
+        id: '43',
+
+    };
+    a.find_by_user_name(username, function(err, uinfo){
+        if(err){
+            console.log("c a 4, 1106 k c u i 915pm   , err : ",err);
+            return process.exit();
+        }
+        p('user info: ', uinfo);
+        process.exit();
+    });
+}
+
+
+var secrets  =  require("../config/secret-dir.js");
+var aws_conf =  secrets.conf.aws;
+function check_ar_43_occupy(name){
+    username = name || 'ar';
+
+    a.find_by_user_name(username, function(err, user_info){
+        if(err){
+            console.log("c a 4, 1106 k c u i 915pm   , err : ",err);
+            return process.exit();
+        }
+        p('ca4o user info: ', user_info);
+
+        // add password because need to do hashing
+        user_info['password'] = 'kkkooo'; 
+
+        user_info['what'] = "user_information";
+        user_info['storage'] = "s3";
+        user_info['s3-bucket'] = aws_conf.root_bucket;
+
+        console.log("in occupy room, before get hid, user info ", user_info);
+
+        console.log("user_info"); console.log(user_info);
+        a.save_user_to_redis(user_info, function(err, uinfo){
+            if(err){
+                console.log("ca4o , 1106 936 , err : ",err);
+                return process.exit();
+            }
+            p('after save u t r   , got: ', uinfo);
+
+            process.exit();
+        });
+
+    });
+}
+
+
+
 if(require.main === module){
     //check_user_id();
     //check_name2id();
@@ -191,7 +288,11 @@ if(require.main === module){
     //check_set_attr();
     //check_assign('am', '29');
 
-    chk_init_user_d('defaults');
+    //chk_init_user_d('defaults');
+
+    //repare_ar();
+    //check_ar_43();
+    check_ar_43_occupy();
 }
 
 
