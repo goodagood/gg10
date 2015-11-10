@@ -198,20 +198,20 @@ function add_gg(home){
         gg = g;
 
         // debugging
-        var gm = g.get_meta();
-        var cwd = gm.path;
+        //var gm = g.get_meta();
+        //var cwd = gm.path;
         //p('meta of cwd: ', cwd, gm);
-        p('to add .gg/message');
+        //p('to add .gg/message');
         //return gg;
 
         return gg.add_folder('message');
     })
     .then(function(msg) {
-        p('to add etc');
+        //p('to add etc');
         return gg.add_folder('etc');
     })
     .then(function() {
-        p('to .gg file listing');
+        //p('to .gg file listing');
         return gg.promise_to_list_files_and_save();
     })
     .then(function() {
